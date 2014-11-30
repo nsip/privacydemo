@@ -1,7 +1,6 @@
-privacydemo
+#privacydemo
 
-Nick Nicholas, NSIP 2014
-nick.nicholas@nsip.edu.au
+Nick Nicholas, [NSIP](http://www.dev.nsip.edu.au/), 2014; nick.nicholas@nsip.edu.au
 
 Code to demonstrate permissions profiling of [SIF](https://www.sifassociation.org/) content through [CEDS](http://ceds.ed.gov/) ids, using JSON injection into payloads.
 
