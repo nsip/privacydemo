@@ -14,7 +14,7 @@ The script illustrates the approach taken for filtering, which is done on JSON r
 3. Filter out elements based on CEDS identifier (`filter.hi.jq, filter.mid.jq, filter.lo.jq`)
 4. Remove CEDS identifiers, and convert filtered JSON back to SIF/XML (`remove_cedsId.jq, xml2json()`)
 
-The filters are in jq, and presuppose SIF-AU 1.3 for the XML to be filtered. 
+The filters are in [jq](http://stedolan.github.io/jq/), and presuppose [SIF-AU 1.3](http://specification.sifassociation.org/Implementation/AU/1.3/html/) for the XML to be filtered. 
 
 Three possible security values are set in the script:
 
@@ -47,25 +47,26 @@ is by appending
 XML tags. These can be removed in JSON or in XML; if there is any real demand, please get in touch.
 
 4. The Goessner converter between XML and JSON does not know about the XSD; as a result, it will convert a list with multiple elements
-into a JSON array, but a list wiht a single element into an object. (e.g. `<Blist><B>X</B><B>Y</B></Blist> => {Blist: [{B: X}, {B: Y}] ;
-<Blist><B>X</B></Blist> => {Blist: {B: X} } )` This trips up the JQ filters for injecting CEDS identifiers, which expect different paths
+into a JSON array, but a list wiht a single element into an object. (e.g. `<Blist><B>X</B><B>Y</B></Blist> => {Blist: [{B: X}, {B: Y}]} ;
+<Blist><B>X</B></Blist> => {Blist: {B: X} } )` This trips up the jq filters for injecting CEDS identifiers, which expect different paths
 for single values and for arrays: 
 
 * `.SchoolInfo.PhoneNumberList.PhoneNumber.Number`  is used for a single PhoneNumber value within PhoneNumberList
 * `.SchoolInfo.PhoneNumberList.PhoneNumber[].Number`  is used for multiple  PhoneNumber values within PhoneNumberList
 
 This complicates the expressions used on the left hand side of the CEDS injection filter: using either expression unmodified will lead 
-to an error, and empty output. A generic matching expression needs to deal with both single elements and arrays with the same index; in JQ
+to an error, and empty output. A generic matching expression needs to deal with both single elements and arrays with the same index; in jq
 the foregoing becomes:
 
 ```
-(.SchoolInfo.SchoolContactList.SchoolContact|((arrays|.[]),objects).ContactInfo.PhoneNumberList.PhoneNumber|((arrays|.[]),objects).Number) 
+(.SchoolInfo.SchoolContactList.SchoolContact|((arrays|.[]),objects).
+  ContactInfo.PhoneNumberList.PhoneNumber|((arrays|.[]),objects).Number) 
 ```
 
 That is, at the point where either a single element or an array can turn up, insert `|((arrays|.[]),objects)` --- running two filters in
 parallel: one (`arrays`) where the next element down is an array, exploding it into its components (`[]`), and one (`objects`) where the next
 element down is a single object. (Running the filters in parallel would normally lead to multiple outputs; but in the CEDS injection filter
-the update (`|=`) operator is used, which modifies the object tree in situ.
+the update (`|=`) operator is used, which modifies the object tree *in situ*.)
 
 Likewise, an match for `.SchoolInfo.YearLevels.YearLevel`, which could be either a single or multiple elements, becomes
 
@@ -82,11 +83,11 @@ instead of the two incompatible filters
 
 For generality, this filter step needs to be injected wherever there is an element within a list in the SIF/XML.
 
-This reduces the legibility of the JQ, but oh well.
+This reduces the legibility of the jq, but oh well.
 
 #RUNNING
 
-Change the path to sif.html in sifproc.js to your absolute path:
+Change the path to `sif.html` in `sifproc.js` to your absolute path:
 ```
     res.sendFile('/Users/nickn/Documents/Arbeit/sifproc/sif.html');
 ```
