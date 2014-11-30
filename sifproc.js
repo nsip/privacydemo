@@ -246,6 +246,7 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 
 
 app.get('/', function(req, res) {
+/* change to your absolute path */
     res.sendFile('/Users/nickn/Documents/Arbeit/sifproc/sif.html');
 });
 

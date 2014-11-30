@@ -3,13 +3,13 @@ privacydemo
 Nick Nicholas, NSIP 2014
 nick.nicholas@nsip.edu.au
 
-Code to demonstrate permissions profiling of SIF content through CEDS ids, using JSON injection into payloads.
+Code to demonstrate permissions profiling of [SIF](https://www.sifassociation.org/) content through [CEDS](http://ceds.ed.gov/) ids, using JSON injection into payloads.
 
 The code is in Javascript running via node.js. The script is `sifproc.js`, which loads as its static page `sif.html`.
 
 The script illustrates the approach taken for filtering, which is done on JSON rather than XML:
 
-1. Convert SIF/XML to JSON (`json2xml()1)
+1. Convert SIF/XML to JSON (`json2xml()`)
 2. Inject CEDS identifiers (`schoolinfo.jq`)
 3. Filter out elements based on CEDS identifier (`filter.hi.jq, filter.mid.jq, filter.lo.jq`)
 4. Remove CEDS identifiers, and convert filtered JSON back to SIF/XML (`remove_cedsId.jq, xml2json()`)
