@@ -1,4 +1,11 @@
-#privacydemo
+***DEPRECATED (RETIRED)***
+
+*This repository is obsolete and retired (archived). This is an unmantained repository. In particular, note that it is not being updated with security patches, including those for dependent libraries.*
+
+
+
+
+# privacydemo
 
 Nick Nicholas, [NSIP](http://www.dev.nsip.edu.au/), 2014; nick.nicholas@nsip.edu.au
 
